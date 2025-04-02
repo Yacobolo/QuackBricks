@@ -27,5 +27,8 @@ go.work.sum
 # Temp build dir (used by Air or your own scripts)
 tmp/
 
+node_modules/
+data/
+
 # Local env files
 **/.env

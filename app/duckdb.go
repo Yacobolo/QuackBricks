@@ -1,17 +1,15 @@
-package main
+package app
 
 import (
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
+
+	_ "github.com/marcboeker/go-duckdb/v2"
 )
 
 type DuckDB interface {
 	Query(query string) (*sqlx.Rows, error)
-
-	// Meta Queries
-	ListTables() (*sqlx.Rows, error)
-	DescribeTable(table string) (*sqlx.Rows, error)
 }
 
 type duckDB struct {
@@ -35,12 +33,4 @@ func NewDuckDB(cfg *config) (DuckDB, error) {
 
 func (d *duckDB) Query(query string) (*sqlx.Rows, error) {
 	return d.db.Queryx(query)
-}
-
-func (d *duckDB) ListTables() (*sqlx.Rows, error) {
-	return d.db.Queryx("SHOW TABLES")
-}
-
-func (d *duckDB) DescribeTable(table string) (*sqlx.Rows, error) {
-	return d.db.Queryx(fmt.Sprintf("DESCRIBE %s", table))
 }
