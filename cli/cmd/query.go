@@ -1,0 +1,42 @@
+/*
+Copyright © 2025 NAME HERE <EMAIL ADDRESS>
+*/
+package cmd
+
+import (
+	"duckdb-test/cli/internal/auth"
+	"duckdb-test/cli/internal/client"
+	"duckdb-test/cli/internal/config"
+	"fmt"
+
+	"github.com/spf13/cobra"
+)
+
+func newQueryCmd(cfg *config.Config) *cobra.Command {
+	return &cobra.Command{
+		Use:   "query",
+		Short: "Query using duckdb",
+		Long:  `This command will send a query to the DuckDB server and return the results.`,
+		Args:  cobra.ExactArgs(1),
+		Run: func(cmd *cobra.Command, args []string) {
+
+			tokenStr, err := auth.CheckAuth(cfg)
+			if err != nil {
+				fmt.Println("❌ Not authenticated. Please run 'cli login'")
+				return
+			}
+
+			param := client.QueryParam{
+				Key:   "q",
+				Value: args[0]}
+
+			err = client.DoAndPrintRequest(cfg, *tokenStr, "/query", param)
+
+			if err != nil {
+				fmt.Println(err)
+			}
+
+		},
+	}
+
+}

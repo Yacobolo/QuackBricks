@@ -1,0 +1,31 @@
+titanic.parquet
+
+# Compiled binary output
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go workspace files
+go.work
+go.work.sum
+
+# Dependency directories
+# Uncomment if you're vendoring dependencies
+# vendor/
+
+# Editor/IDE files
+*.swp
+*.swo
+*.log
+*.tmp
+*.DS_Store
+
+# Temp build dir (used by Air or your own scripts)
+tmp/
+
+# Local env files
+**/.env
