@@ -20,7 +20,6 @@ require (
 	github.com/marcboeker/go-duckdb/v2 v2.1.0
 	github.com/nats-io/nats-server/v2 v2.11.0
 	github.com/spf13/cobra v1.9.1
-	github.com/starfederation/datastar v1.0.0-beta.11
 )
 
 require (
@@ -33,7 +32,6 @@ require (
 	github.com/apache/arrow-go/v18 v18.1.0 // indirect
 	github.com/cenkalti/backoff v2.2.1+incompatible // indirect
 	github.com/chewxy/math32 v1.11.1 // indirect
-	github.com/delaneyj/gostar v0.8.0 // indirect
 	github.com/denisbrodbeck/machineid v1.0.1 // indirect
 	github.com/duckdb/duckdb-go-bindings v0.1.13 // indirect
 	github.com/duckdb/duckdb-go-bindings/darwin-amd64 v0.1.8 // indirect
@@ -50,7 +48,6 @@ require (
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/securecookie v1.1.2 // indirect
 	github.com/iancoleman/strcase v0.3.0 // indirect
-	github.com/igrmk/treemap/v2 v2.0.1 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/keybase/go-keychain v0.0.0-20231219164618-57a3676c3af6 // indirect
 	github.com/klauspost/compress v1.18.0 // indirect
@@ -70,9 +67,7 @@ require (
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/rzajac/clock v0.2.0 // indirect
 	github.com/rzajac/zflake v0.8.0 // indirect
-	github.com/samber/lo v1.49.1 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
-	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/ysmood/fetchup v0.2.4 // indirect
 	github.com/ysmood/goob v0.4.0 // indirect
 	github.com/ysmood/got v0.40.0 // indirect

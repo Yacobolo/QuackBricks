@@ -2,7 +2,7 @@ version: "3"
 
 env:
   NATS_PORT: 4222
-  STATIC_DIR: "web/static"
+  STATIC_DIR: "app/web/static"
 
 tasks:
   tools:
@@ -63,13 +63,13 @@ tasks:
 
   live:styles:
     cmds:
-      - pnpm exec tailwindcss -c tailwind.config.js -i web/css/app.css -o $STATIC_DIR/css/index.css --watch
+      - pnpm exec tailwindcss -c tailwind.config.js -i app/web/css/app.css -o $STATIC_DIR/css/index.css --watch
 
   live:server:
     cmds:
       - |
         air  \
-         -build.cmd "go build -o tmp/bin/main ./cmd/app" \
+         -build.cmd "go build -o tmp/bin/main ./app/cmd/app" \
          -build.bin "tmp/bin/main" \
          -build.delay "100" \
          -build.exclude_dir "data,node_modules" \
