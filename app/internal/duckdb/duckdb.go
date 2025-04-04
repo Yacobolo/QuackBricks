@@ -1,6 +1,7 @@
-package app
+package duckdb
 
 import (
+	"duckdb-test/app/internal/config"
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
@@ -16,7 +17,7 @@ type duckDB struct {
 	db *sqlx.DB
 }
 
-func NewDuckDB(cfg *config) (DuckDB, error) {
+func New(cfg *config.Config) (DuckDB, error) {
 	db, err := sqlx.Open("duckdb", "")
 	if err != nil {
 		return nil, fmt.Errorf("open db: %w", err)

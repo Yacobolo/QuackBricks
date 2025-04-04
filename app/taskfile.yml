@@ -2,7 +2,7 @@ version: "3"
 
 env:
   NATS_PORT: 4222
-  STATIC_DIR: "static"
+  STATIC_DIR: "web/static"
 
 tasks:
   tools:
@@ -63,7 +63,7 @@ tasks:
 
   live:styles:
     cmds:
-      - pnpm exec tailwindcss -c tailwind.config.js -i src/css/app.css -o $STATIC_DIR/css/index.css --watch
+      - pnpm exec tailwindcss -c tailwind.config.js -i web/css/app.css -o $STATIC_DIR/css/index.css --watch
 
   live:server:
     cmds:

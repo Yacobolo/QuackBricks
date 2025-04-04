@@ -1,4 +1,4 @@
-package app
+package config
 
 import (
 	"log"
@@ -7,7 +7,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-type config struct {
+type Config struct {
 	ConnectionString string
 	TenantID         string
 	ClientID         string
@@ -22,13 +22,13 @@ func MustGetenv(key string) string {
 	return value
 }
 
-func NewConfig() *config {
+func NewConfig() *Config {
 	err := godotenv.Load()
 	if err != nil {
 		log.Printf("Error loading .env file: %v", err)
 	}
 
-	cfg := &config{
+	cfg := &Config{
 		ConnectionString: MustGetenv("CONNECTION_STRING"),
 		TenantID:         MustGetenv("TENANT_ID"),
 		ClientID:         MustGetenv("CLIENT_ID"),

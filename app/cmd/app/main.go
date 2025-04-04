@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"duckdb-test/app"
+	"duckdb-test/app/web"
 	"fmt"
 	"log"
 	"log/slog"
@@ -39,7 +39,7 @@ func run(ctx context.Context) error {
 
 	eg := toolbelt.NewErrGroupSharedCtx(
 		ctx,
-		app.RunBlocking(port, nil),
+		web.RunBlocking(port, nil),
 	)
 	if err := eg.Wait(); err != nil {
 		return fmt.Errorf("error running server: %w", err)

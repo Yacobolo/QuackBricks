@@ -1,6 +1,8 @@
-package app
+package web
 
 import (
+	"duckdb-test/app/internal/auth"
+	"duckdb-test/app/internal/duckdb"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -8,7 +10,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func setupHome(router chi.Router, apiRouter chi.Router, db DuckDB) error {
+func setupHome(router chi.Router, apiRouter chi.Router, db duckdb.DuckDB) error {
 
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		// sse := datastar.NewSSE(w, r)
@@ -35,7 +37,7 @@ func setupHome(router chi.Router, apiRouter chi.Router, db DuckDB) error {
 
 	apiRouter.Get("/me", func(w http.ResponseWriter, r *http.Request) {
 
-		user := GetUserFromContext(r)
+		user := auth.GetUserFromContext(r)
 
 		jsonData, err := json.Marshal(user)
 		if err != nil {
@@ -51,7 +53,7 @@ func setupHome(router chi.Router, apiRouter chi.Router, db DuckDB) error {
 	return nil
 }
 
-func queryHandler(db DuckDB, query string, w http.ResponseWriter) {
+func queryHandler(db duckdb.DuckDB, query string, w http.ResponseWriter) {
 	rows, err := db.Query(query)
 	if err != nil {
 		fmt.Printf("Error executing query: %s", err)
