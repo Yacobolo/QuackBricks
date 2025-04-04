@@ -97,7 +97,7 @@ func setupRoutes(ctx context.Context, router chi.Router) (err error) {
 
 	if err := errors.Join(
 		// setupHome(router, sessionSignals, ns, index),
-		setupHome(apiRouter, db),
+		setupHome(router, apiRouter, db),
 	); err != nil {
 		return fmt.Errorf("error setting up routes: %w", err)
 	}

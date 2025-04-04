@@ -8,7 +8,16 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func setupHome(apiRouter chi.Router, db DuckDB) error {
+func setupHome(router chi.Router, apiRouter chi.Router, db DuckDB) error {
+
+	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		// sse := datastar.NewSSE(w, r)
+
+		c := home()
+		c.Render(r.Context(), w)
+
+		// sse.MergeFragmentTempl(c)
+	})
 
 	apiRouter.Get("/query", func(w http.ResponseWriter, r *http.Request) {
 		query := r.URL.Query().Get("q")

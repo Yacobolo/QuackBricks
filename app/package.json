@@ -12,6 +12,7 @@
   "packageManager": "pnpm@10.6.5",
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.1",
+    "@tailwindcss/typography": "^0.5.16",
     "autoprefixer": "^10.4.21",
     "daisyui": "^5.0.12",
     "esbuild": "^0.25.2",
