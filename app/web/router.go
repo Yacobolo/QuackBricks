@@ -5,6 +5,7 @@ import (
 	"duckdb-test/app/internal/auth"
 	"duckdb-test/app/internal/config"
 	"duckdb-test/app/internal/duckdb"
+	"duckdb-test/app/internal/sqlite"
 	"errors"
 	"fmt"
 	"log"
@@ -23,7 +24,15 @@ func setupRoutes(ctx context.Context, router chi.Router) (err error) {
 
 	cfg := config.NewConfig()
 
-	db, err := duckdb.New(cfg)
+	metastore, err := sqlite.InitDatabase("data/metastore.db")
+
+	if err != nil {
+		return fmt.Errorf("error initializing metastore: %w", err)
+	}
+
+	queries := sqlite.New(metastore)
+
+	duckdb, err := duckdb.New(cfg)
 
 	if err != nil {
 		log.Fatalf("Error creating DuckDB: %s", err)
@@ -59,7 +68,7 @@ func setupRoutes(ctx context.Context, router chi.Router) (err error) {
 
 	if err := errors.Join(
 		// setupHome(router, sessionSignals, ns, index),
-		setupHome(router, apiRouter, db),
+		setupHome(router, apiRouter, duckdb, queries),
 	); err != nil {
 		return fmt.Errorf("error setting up routes: %w", err)
 	}

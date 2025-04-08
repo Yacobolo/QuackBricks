@@ -3,13 +3,52 @@ version: "3"
 env:
   NATS_PORT: 4222
   STATIC_DIR: "app/web/static"
+  GOOSE_DRIVER: "sqlite3"
+  GOOSE_DBSTRING: "./metastore.db"
+  GOOSE_MIGRATION_DIR: "app/internal/sqlite/migrations"
 
 tasks:
+  up:
+    desc: Run goose up
+    cmds:
+      - |
+        GOOSE_DRIVER=$GOOSE_DRIVER \
+        GOOSE_DBSTRING="$GOOSE_DBSTRING" \
+        GOOSE_MIGRATION_DIR=$GOOSE_MIGRATION_DIR \
+        goose up
+
+  down:
+    desc: Run goose down
+    cmds:
+      - |
+        GOOSE_DRIVER=$GOOSE_DRIVER \
+        GOOSE_DBSTRING="$GOOSE_DBSTRING" \
+        GOOSE_MIGRATION_DIR=$GOOSE_MIGRATION_DIR \
+        goose down
+
+  reset:
+    desc: Run goose reset
+    cmds:
+      - |
+        GOOSE_DRIVER=$GOOSE_DRIVER \
+        GOOSE_DBSTRING="$GOOSE_DBSTRING" \
+        GOOSE_MIGRATION_DIR=$GOOSE_MIGRATION_DIR \
+        goose reset
+
+  migration:
+    desc: Create a new migration file (SQL)
+    interactive: true
+    cmds:
+      - |
+        read -p "Enter migration name: " migration_name && \
+        goose -dir=$GOOSE_MIGRATION_DIR create "$migration_name" sql
+
   tools:
     cmds:
       - go install github.com/a-h/templ/cmd/templ@v0.3.833
       - go install github.com/air-verse/air@v1.61.7
       - go install github.com/go-task/task/v3/cmd/task@latest
+      - go install github.com/pressly/goose/v3/cmd/goose@latest
 
   # The `build:` tasks below are used together for "production" builds of your project
   build:templ:

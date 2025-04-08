@@ -1,0 +1,14 @@
+version: "2"
+sql:
+  - engine: "sqlite"
+    schema:
+      - "app/internal/sqlite/migrations/"
+    queries:
+      - "app/internal/sqlite/queries/"
+    gen:
+      go:
+        package: "sqlite"
+        out: "app/internal/sqlite/"
+        # emit_db_tags: true
+        emit_pointers_for_null_types: true
+        emit_json_tags: true

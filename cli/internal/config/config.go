@@ -22,6 +22,14 @@ func MustGetenv(key string) string {
 	return value
 }
 
+func getEnv(key string, fallback string) string {
+	value := os.Getenv(key)
+	if value == "" {
+		return fallback
+	}
+	return value
+}
+
 func NewConfig() *Config {
 	err := godotenv.Load()
 	if err != nil {
@@ -31,9 +39,8 @@ func NewConfig() *Config {
 	cfg := &Config{
 		TenantID: MustGetenv("TENANT_ID"),
 		ClientID: MustGetenv("CLIENT_ID"),
-		Endpoint: MustGetenv("ENDPOINT"),
+		Endpoint: getEnv("ENDPOINT", "http://localhost:8080/api"),
 	}
-
 	cfg.Scopes = []string{cfg.ClientID + "/.default"}
 
 	return cfg

@@ -1,4 +1,5 @@
 titanic.parquet
+metastore.db
 
 # Compiled binary output
 *.exe

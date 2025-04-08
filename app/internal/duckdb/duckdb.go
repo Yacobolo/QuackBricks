@@ -2,6 +2,7 @@ package duckdb
 
 import (
 	"duckdb-test/app/internal/config"
+	"encoding/json"
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
@@ -11,6 +12,7 @@ import (
 
 type DuckDB interface {
 	Query(query string) (*sqlx.Rows, error)
+	QueryToJSON(query string) ([]byte, error)
 }
 
 type duckDB struct {
@@ -34,4 +36,24 @@ func New(cfg *config.Config) (DuckDB, error) {
 
 func (d *duckDB) Query(query string) (*sqlx.Rows, error) {
 	return d.db.Queryx(query)
+}
+
+func (d *duckDB) QueryToJSON(query string) ([]byte, error) {
+	rows, err := d.Query(query)
+	if err != nil {
+		return nil, fmt.Errorf("query: %w", err)
+	}
+	defer rows.Close()
+
+	var results []map[string]interface{}
+	for rows.Next() {
+		rowData := make(map[string]interface{})
+		err = rows.MapScan(rowData)
+		if err != nil {
+			return nil, fmt.Errorf("map scan: %w", err)
+		}
+		results = append(results, rowData)
+	}
+
+	return json.Marshal(results)
 }
