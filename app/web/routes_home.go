@@ -2,9 +2,9 @@ package web
 
 import (
 	"duckdb-test/app/internal/auth"
+	"duckdb-test/app/internal/catalog"
 	"duckdb-test/app/internal/duckdb"
 	"duckdb-test/app/internal/handler"
-	"duckdb-test/app/internal/services/catalog"
 	"duckdb-test/app/internal/sqlite"
 	"encoding/json"
 	"fmt"
@@ -59,67 +59,14 @@ func setupHome(router chi.Router, apiRouter chi.Router, db duckdb.DuckDB, q *sql
 	})
 
 	apiRouter.Route("/catalog", func(catalogRouter chi.Router) {
-		catalogRouter.Get("/", func(w http.ResponseWriter, r *http.Request) {
-			catalog, err := q.ListCatalogEntries(r.Context())
 
-			if err != nil {
-				http.Error(w, fmt.Sprintf("Error listing catalog entries: %v", err), http.StatusInternalServerError)
-				return
-			}
+		catalogService := catalog.NewService(q)
+		catalogHandler := catalog.NewHandler(catalogService)
 
-			jsonData, err := json.Marshal(catalog)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-			}
-
-			w.Header().Set("Content-Type", "application/json")
-			w.Write(jsonData)
-
-		})
-
-		catalogRouter.Get("/{id}", func(w http.ResponseWriter, r *http.Request) {
-			id := chi.URLParam(r, "id")
-
-			if id == "" {
-				http.Error(w, "Catalog ID is required", http.StatusBadRequest)
-				return
-			}
-
-			catalog, err := q.GetCatalogEntry(r.Context(), id)
-
-			if err != nil {
-				http.Error(w, fmt.Sprintf("Error getting catalog entry: %v", err), http.StatusInternalServerError)
-				return
-			}
-
-			jsonData, err := json.Marshal(catalog)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-			}
-
-			w.Header().Set("Content-Type", "application/json")
-			w.Write(jsonData)
-
-		})
-		catalogRouter.Post("/", func(w http.ResponseWriter, r *http.Request) {
-
-			catalogService := catalog.NewService(q)
-
-			var req catalog.CatalogEntryInput
-			if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-				http.Error(w, "Invalid JSON", http.StatusBadRequest)
-				return
-			}
-
-			err := catalogService.Register(r.Context(), &req)
-			if err != nil {
-				http.Error(w, fmt.Sprintf("Error creating catalog entry: %v", err), http.StatusInternalServerError)
-				return
-			}
-
-			w.WriteHeader(http.StatusCreated)
-			w.Write([]byte("Catalog entry created successfully"))
-		})
+		catalogRouter.Get("/", catalogHandler.ListCatalogEntries)
+		catalogRouter.Post("/", catalogHandler.RegisterCatalogEntry)
+		catalogRouter.Get("/{id}", catalogHandler.GetCatalogEntry)
+		catalogRouter.Delete("/{id}", catalogHandler.DeleteCatalogEntry)
 	})
 
 	return nil
