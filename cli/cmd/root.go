@@ -33,6 +33,7 @@ func Execute(cfg *config.Config) {
 	rootCmd.AddCommand(newLoginCmd(cfg))
 	rootCmd.AddCommand(newMeCmd(cfg))
 	rootCmd.AddCommand(newQueryCmd(cfg))
+	rootCmd.AddCommand(newRegsiterCmd(cfg))
 
 	err := rootCmd.Execute()
 	if err != nil {

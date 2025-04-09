@@ -2,9 +2,9 @@ package web
 
 import (
 	"duckdb-test/app/internal/auth"
-	"duckdb-test/app/internal/domain"
 	"duckdb-test/app/internal/duckdb"
 	"duckdb-test/app/internal/handler"
+	"duckdb-test/app/internal/services/catalog"
 	"duckdb-test/app/internal/sqlite"
 	"encoding/json"
 	"fmt"
@@ -102,33 +102,17 @@ func setupHome(router chi.Router, apiRouter chi.Router, db duckdb.DuckDB, q *sql
 
 		})
 		catalogRouter.Post("/", func(w http.ResponseWriter, r *http.Request) {
-			var req struct {
-				Name        string  `json:"name"`
-				SourceType  string  `json:"source_type"`
-				Location    string  `json:"location"`
-				SchemaName  *string `json:"schema_name"`
-				Description *string `json:"description"`
-			}
 
+			catalogService := catalog.NewService(q)
+
+			var req catalog.CatalogEntryInput
 			if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 				http.Error(w, "Invalid JSON", http.StatusBadRequest)
 				return
 			}
 
-			params := sqlite.CreateCatalogEntryParams{
-				Name:        req.Name,
-				SourceType:  req.SourceType,
-				Location:    req.Location,
-				SchemaName:  req.SchemaName,
-				Description: req.Description,
-			}
-
-			if err := domain.ValidateCatalogParams(params); err != nil {
-				http.Error(w, fmt.Sprintf("Invalid catalog entry: %v", err), http.StatusBadRequest)
-				return
-			}
-
-			if err := q.CreateCatalogEntry(r.Context(), params); err != nil {
+			err := catalogService.Register(r.Context(), &req)
+			if err != nil {
 				http.Error(w, fmt.Sprintf("Error creating catalog entry: %v", err), http.StatusInternalServerError)
 				return
 			}

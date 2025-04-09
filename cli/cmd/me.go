@@ -31,7 +31,13 @@ func newMeCmd(cfg *config.Config) *cobra.Command {
 				return
 			}
 
-			err = client.DoAndPrintRequest(cfg, *tokenStr, "/me")
+			err = client.DoAndPrintRequest(client.RequestParams{
+				Cfg:    cfg,
+				Token:  *tokenStr,
+				Method: "GET",
+				Path:   "/me",
+			},
+			)
 
 			if err != nil {
 				fmt.Println(err)

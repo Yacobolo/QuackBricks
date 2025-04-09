@@ -26,11 +26,22 @@ func newQueryCmd(cfg *config.Config) *cobra.Command {
 				return
 			}
 
-			param := client.QueryParam{
+			QueryParam := client.QueryParam{
 				Key:   "q",
 				Value: args[0]}
 
-			err = client.DoAndPrintRequest(cfg, *tokenStr, "/query", param)
+			// err = client.DoAndPrintRequest(cfg, *tokenStr, "/query", param)
+
+			err = client.DoAndPrintRequest(client.RequestParams{
+				Cfg:    cfg,
+				Token:  *tokenStr,
+				Path:   "/query",
+				Method: "GET",
+				QueryParams: []client.QueryParam{
+					QueryParam,
+				},
+			},
+			)
 
 			if err != nil {
 				fmt.Println(err)
