@@ -8,6 +8,7 @@ env:
   GOOSE_MIGRATION_DIR: "app/internal/sqlite/migrations"
 
 tasks:
+  # migrations
   up:
     desc: Run goose up
     cmds:

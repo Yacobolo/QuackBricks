@@ -2,7 +2,7 @@ package web
 
 import (
 	"context"
-	"duckdb-test/app/internal/auth"
+	auth "duckdb-test/app/internal/auth/app"
 	"duckdb-test/app/internal/config"
 	"duckdb-test/app/internal/duckdb"
 	"duckdb-test/app/internal/sqlite"

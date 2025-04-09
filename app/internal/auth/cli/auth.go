@@ -2,7 +2,7 @@ package auth
 
 import (
 	"context"
-	"duckdb-test/cli/internal/config"
+	"duckdb-test/app/internal/config"
 	"encoding/json"
 	"fmt"
 	"os"

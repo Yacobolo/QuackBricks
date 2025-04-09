@@ -1,7 +1,6 @@
 package catalog
 
 import (
-	"duckdb-test/pkg/catalog"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -16,14 +15,14 @@ func NewHandler(s *Service) *Handler {
 }
 
 func (h *Handler) RegisterCatalogEntry(w http.ResponseWriter, r *http.Request) {
-	var req catalog.CatalogEntryInput
+	var req *CatalogEntryInput
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
 		return
 	}
 
-	err := h.Service.Register(r.Context(), &req)
+	err := h.Service.Register(r.Context(), req)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error creating catalog entry: %v", err), http.StatusInternalServerError)
 		return

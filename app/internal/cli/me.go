@@ -1,12 +1,9 @@
-/*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-*/
-package cmd
+package cli
 
 import (
-	"duckdb-test/cli/internal/auth"
-	"duckdb-test/cli/internal/client"
-	"duckdb-test/cli/internal/config"
+	auth "duckdb-test/app/internal/auth/cli"
+	"duckdb-test/app/internal/client"
+	"duckdb-test/app/internal/config"
 	"fmt"
 
 	"github.com/spf13/cobra"

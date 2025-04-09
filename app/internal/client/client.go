@@ -2,7 +2,7 @@ package client
 
 import (
 	"bytes"
-	"duckdb-test/cli/internal/config"
+	"duckdb-test/app/internal/config"
 	"encoding/json"
 	"fmt"
 	"io"

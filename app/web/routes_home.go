@@ -1,7 +1,7 @@
 package web
 
 import (
-	"duckdb-test/app/internal/auth"
+	auth "duckdb-test/app/internal/auth/app"
 	"duckdb-test/app/internal/catalog"
 	"duckdb-test/app/internal/duckdb"
 	"duckdb-test/app/internal/handler"

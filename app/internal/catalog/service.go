@@ -3,7 +3,6 @@ package catalog
 import (
 	"context"
 	"duckdb-test/app/internal/sqlite"
-	"duckdb-test/pkg/catalog"
 	"slices"
 )
 
@@ -17,7 +16,7 @@ func NewService(q *sqlite.Queries) *Service {
 	}
 }
 
-func (c *Service) Register(ctx context.Context, req *catalog.CatalogEntryInput) error {
+func (c *Service) Register(ctx context.Context, req *CatalogEntryInput) error {
 	if err := validate(req); err != nil {
 		return err
 	}
@@ -33,13 +32,16 @@ func (c *Service) Register(ctx context.Context, req *catalog.CatalogEntryInput) 
 	return c.q.CreateCatalogEntry(ctx, params)
 }
 
-func validate(req *catalog.CatalogEntryInput) error {
+func validate(req *CatalogEntryInput) error {
+	if req == nil {
+		return ErrInvalidInput
+	}
 	if req.Name == "" || req.SourceType == "" || req.Location == "" {
-		return catalog.ErrMissingField
+		return ErrMissingField
 	}
 
-	if !slices.Contains(catalog.AllowedSourceTypes, catalog.SourceType(req.SourceType)) {
-		return catalog.ErrInvalidSource
+	if !slices.Contains(AllowedSourceTypes, SourceType(req.SourceType)) {
+		return ErrInvalidSource
 	}
 
 	return nil

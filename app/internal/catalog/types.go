@@ -5,6 +5,7 @@ import "errors"
 var (
 	ErrInvalidSource = errors.New("invalid source_type")
 	ErrMissingField  = errors.New("missing required field")
+	ErrInvalidInput  = errors.New("invalid input")
 )
 
 type SourceType string
