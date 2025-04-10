@@ -15,20 +15,30 @@ type QueryParam struct {
 	Value string
 }
 
+type HttpMethod string
+
+const (
+	MethodGet    HttpMethod = "GET"
+	MethodPost   HttpMethod = "POST"
+	MethodPut    HttpMethod = "PUT"
+	MethodPatch  HttpMethod = "PATCH"
+	MethodDelete HttpMethod = "DELETE"
+)
+
 type RequestParams struct {
 	Cfg         *config.Config
 	Token       string
 	Payload     interface{}
 	Path        string
-	Method      string
 	QueryParams []QueryParam
+	HttpMethod  HttpMethod
 }
 
 // DoAndPrintRequest performs a GET request to the given API path with the provided bearer token
 func DoAndPrintRequest(rp RequestParams) error {
-	requestMethod := rp.Method
-	if requestMethod == "" {
-		requestMethod = http.MethodGet
+	//set default method to GET
+	if rp.HttpMethod == "" {
+		rp.HttpMethod = MethodGet
 	}
 
 	// Parse base + path as URL
@@ -55,7 +65,7 @@ func DoAndPrintRequest(rp RequestParams) error {
 	}
 
 	// Build request
-	req, err := http.NewRequest(requestMethod, fullURL.String(), reqBody)
+	req, err := http.NewRequest(string(rp.HttpMethod), fullURL.String(), reqBody)
 	if err != nil {
 		return err
 	}

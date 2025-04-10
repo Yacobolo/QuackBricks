@@ -48,7 +48,7 @@ func LoadRecord() (azidentity.AuthenticationRecord, error) {
 func AuthenticateAndSave(cfg *config.Config) error {
 
 	// Try to load existing record
-	if _, err := CheckAuth(cfg); err == nil {
+	if _, err := GetAuthToken(cfg); err == nil {
 		fmt.Println("✅ Already logged in.")
 		return nil
 	}
@@ -77,7 +77,7 @@ func AuthenticateAndSave(cfg *config.Config) error {
 	return nil
 }
 
-func CheckAuth(cfg *config.Config) (*string, error) {
+func GetAuthToken(cfg *config.Config) (*string, error) {
 
 	if record, err := LoadRecord(); err == nil {
 

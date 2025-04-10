@@ -6,6 +6,7 @@ import (
 	"duckdb-test/app/internal/duckdb"
 	"duckdb-test/app/internal/handler"
 	"duckdb-test/app/internal/sqlite"
+	"duckdb-test/app/internal/sqlite/gen"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -13,7 +14,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func setupHome(router chi.Router, apiRouter chi.Router, db duckdb.DuckDB, q *sqlite.Queries) error {
+func setupHome(router chi.Router, apiRouter chi.Router, db duckdb.DuckDB, q *gen.Queries) error {
 
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		// sse := datastar.NewSSE(w, r)
@@ -60,7 +61,8 @@ func setupHome(router chi.Router, apiRouter chi.Router, db duckdb.DuckDB, q *sql
 
 	apiRouter.Route("/catalog", func(catalogRouter chi.Router) {
 
-		catalogService := catalog.NewService(q)
+		catalogRepo := sqlite.NewCatalogRepository(q)
+		catalogService := catalog.NewService(catalogRepo)
 		catalogHandler := catalog.NewHandler(catalogService)
 
 		catalogRouter.Get("/", catalogHandler.ListCatalogEntries)

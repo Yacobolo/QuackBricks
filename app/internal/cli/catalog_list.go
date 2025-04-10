@@ -9,12 +9,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func newQueryCmd(cfg *config.Config) *cobra.Command {
-	return &cobra.Command{
-		Use:   "query",
-		Short: "Query using duckdb",
-		Long:  `This command will send a query to the DuckDB server and return the results.`,
-		Args:  cobra.ExactArgs(1),
+var ()
+
+func newCatalogListCmd(cfg *config.Config) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "list",
+		Short: "List all catalog entries.",
+		Long:  `Lists all catalog entries in the system.`,
 		Run: func(cmd *cobra.Command, args []string) {
 
 			tokenStr, err := auth.GetAuthToken(cfg)
@@ -23,28 +24,19 @@ func newQueryCmd(cfg *config.Config) *cobra.Command {
 				return
 			}
 
-			QueryParam := client.QueryParam{
-				Key:   "q",
-				Value: args[0]}
-
-			// err = client.DoAndPrintRequest(cfg, *tokenStr, "/query", param)
-
 			err = client.DoAndPrintRequest(client.RequestParams{
 				Cfg:        cfg,
 				Token:      *tokenStr,
-				Path:       "/query",
+				Path:       "/catalog",
 				HttpMethod: client.MethodGet,
-				QueryParams: []client.QueryParam{
-					QueryParam,
-				},
 			},
 			)
-
 			if err != nil {
 				fmt.Println(err)
 			}
 
 		},
 	}
+	return cmd
 
 }

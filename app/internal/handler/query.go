@@ -3,7 +3,7 @@ package handler
 import (
 	"context"
 	"duckdb-test/app/internal/duckdb"
-	"duckdb-test/app/internal/sqlite"
+	"duckdb-test/app/internal/sqlite/gen"
 	"fmt"
 	"hash/fnv"
 	"log"
@@ -17,7 +17,7 @@ import (
 
 // Import the tree package for AST node types
 
-func QueryHandler(q *sqlite.Queries, db duckdb.DuckDB, query string, w http.ResponseWriter) error {
+func QueryHandler(q *gen.Queries, db duckdb.DuckDB, query string, w http.ResponseWriter) error {
 
 	catalogMap := getCatalogMap(q)
 
@@ -44,7 +44,7 @@ func QueryHandler(q *sqlite.Queries, db duckdb.DuckDB, query string, w http.Resp
 
 }
 
-func getCatalogMap(q *sqlite.Queries) map[string]string {
+func getCatalogMap(q *gen.Queries) map[string]string {
 	ctx := context.Background()
 
 	catalog, err := q.ListCatalogEntries(ctx)

@@ -9,16 +9,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func newMeCmd(cfg *config.Config) *cobra.Command {
+func newCatalogGetCmd(cfg *config.Config) *cobra.Command {
 	return &cobra.Command{
-		Use:   "me",
-		Short: "A brief description of your command",
-		Long: `A longer description that spans multiple lines and likely contains examples
-		and usage of using your command. For example:
-
-		Cobra is a CLI library for Go that empowers applications.
-		This application is a tool to generate the needed files
-		to quickly create a Cobra application.`,
+		Use:     "get",
+		Args:    cobra.ExactArgs(1),
+		Short:   "Get a catalog",
+		Long:    `Get a catalog in the DuckDB service.`,
+		Example: `cli catalog get <catalog_name> or cli catalog get <catalog_id>`,
 		Run: func(cmd *cobra.Command, args []string) {
 
 			tokenStr, err := auth.GetAuthToken(cfg)

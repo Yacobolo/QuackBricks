@@ -1,13 +1,22 @@
 -- name: CreateCatalogEntry :exec
 INSERT INTO catalog (
-    name, source_type, location, schema_name, description
-) VALUES (
-    ?, ?, ?, ?, ?
-);
+    id,
+    name,
+    schema_name,
+    source_type,
+    location,
+    description,
+    registered_at
+) VALUES (?, ?, ?, ?, ?, ?, ?);
 
--- name: GetCatalogEntry :one
+-- name: GetCatalogEntryById :one
 SELECT * FROM catalog
-WHERE name = ?
+WHERE id = ?
+LIMIT 1;
+
+-- name: GetCatalogEntryByQualifiedName :one
+SELECT * FROM catalog
+WHERE name = ? and schema_name = ?
 LIMIT 1;
 
 -- name: ListCatalogEntries :many
@@ -16,13 +25,15 @@ ORDER BY registered_at DESC;
 
 -- name: UpdateCatalogEntry :exec
 UPDATE catalog
-SET
+SET name = ?,
+    schema_name = ?,
     source_type = ?,
     location = ?,
-    schema_name = ?,
-    description = ?
-WHERE name = ?;
+    description = ?,
+    registered_at = ?
+WHERE id = ?;
+
 
 -- name: DeleteCatalogEntry :exec
 DELETE FROM catalog
-WHERE name = ?;
+WHERE id = ?;

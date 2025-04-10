@@ -6,6 +6,7 @@ import (
 	"duckdb-test/app/internal/config"
 	"duckdb-test/app/internal/duckdb"
 	"duckdb-test/app/internal/sqlite"
+	"duckdb-test/app/internal/sqlite/gen"
 	"errors"
 	"fmt"
 	"log"
@@ -30,7 +31,7 @@ func setupRoutes(ctx context.Context, router chi.Router) (err error) {
 		return fmt.Errorf("error initializing metastore: %w", err)
 	}
 
-	queries := sqlite.New(metastore)
+	queries := gen.New(metastore)
 
 	duckdb, err := duckdb.New(cfg)
 
